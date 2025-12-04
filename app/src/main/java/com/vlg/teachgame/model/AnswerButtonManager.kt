@@ -1,4 +1,4 @@
-package com.vlg.teachgame
+package com.vlg.teachgame.model
 
 import android.animation.ObjectAnimator
 import android.view.View
@@ -49,12 +49,12 @@ class AnswerButtonManager(
         val button = if (isCorrect) trueButton else falseButton
 
         ObjectAnimator.ofFloat(button, "scaleX", 1f, 1.2f, 1f).apply {
-            duration = 300
+            setDuration(300)
             start()
         }
 
         ObjectAnimator.ofFloat(button, "scaleY", 1f, 1.2f, 1f).apply {
-            duration = 300
+            setDuration(300)
             start()
         }
     }

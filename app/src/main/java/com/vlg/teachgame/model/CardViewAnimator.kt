@@ -1,4 +1,4 @@
-package com.vlg.teachgame
+package com.vlg.teachgame.model
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.cardview.widget.CardView
@@ -106,6 +107,7 @@ class CardViewAnimator(
                 super.onAnimationEnd(animation)
 
                 currentQuestionIndex = (currentQuestionIndex + 1) % questions.size
+                Log.d("!!3!", ""+currentQuestionIndex +" " + questions.size)
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     val nextQuestion = questions[currentQuestionIndex]
