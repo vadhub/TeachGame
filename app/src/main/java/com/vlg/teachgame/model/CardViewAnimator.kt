@@ -6,7 +6,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.cardview.widget.CardView
@@ -19,9 +18,10 @@ class CardViewAnimator(
     private var currentQuestionIndex = 0
     private var questions: List<String> = emptyList()
     private var onQuestionShow: ((String) -> Unit)? = null
-    private var onAnswerProcessed: ((Boolean) -> Unit)? = null
+    private var onAnswerProcessed: ((Boolean, Boolean) -> Unit)? = null
     private var onAnimationComplete: (() -> Unit)? = null
     private var isAnimating = false
+    private var shouldShowNextQuestion = false
 
     fun setQuestions(questions: List<String>) {
         this.questions = questions
@@ -31,7 +31,7 @@ class CardViewAnimator(
         this.onQuestionShow = listener
     }
 
-    fun setOnAnswerProcessedListener(listener: (Boolean) -> Unit) {
+    fun setOnAnswerProcessedListener(listener: (Boolean, Boolean) -> Unit) {
         this.onAnswerProcessed = listener
     }
 
@@ -50,6 +50,7 @@ class CardViewAnimator(
 
         val question = questions[currentQuestionIndex]
         onQuestionShow?.invoke(question)
+        shouldShowNextQuestion = true
 
         performEnterAnimation()
     }
@@ -81,66 +82,54 @@ class CardViewAnimator(
         set.start()
     }
 
-    fun processAnswer(isCorrect: Boolean) {
+    fun processAnswer(isAnswerAccepted: Boolean, isTeacherMistake: Boolean) {
         if (isAnimating) return
         isAnimating = true
 
-        onAnswerProcessed?.invoke(isCorrect)
+        onAnswerProcessed?.invoke(isAnswerAccepted, isTeacherMistake)
 
-        val bounceAnimator = ObjectAnimator.ofFloat(cardView, "scaleY", 1f, 0.95f, 1f)
-        bounceAnimator.duration = 200
+        if (isAnswerAccepted) {
+            val bounceAnimator = ObjectAnimator.ofFloat(cardView, "scaleY", 1f, 0.95f, 1f)
+            bounceAnimator.duration = 200
 
-        val exitAnimator = ObjectAnimator.ofFloat(cardView, "translationX", 0f, screenWidth.toFloat())
-        exitAnimator.duration = 800
-        exitAnimator.interpolator = AccelerateInterpolator()
+            val exitAnimator = ObjectAnimator.ofFloat(cardView, "translationX", 0f, screenWidth.toFloat())
+            exitAnimator.duration = 800
+            exitAnimator.interpolator = AccelerateInterpolator()
 
-        val fadeOutAnimator = ObjectAnimator.ofFloat(cardView, "alpha", 1f, 0f)
-        fadeOutAnimator.duration = 400
+            val fadeOutAnimator = ObjectAnimator.ofFloat(cardView, "alpha", 1f, 0f)
+            fadeOutAnimator.duration = 400
 
-        val exitSet = AnimatorSet()
-        exitSet.playTogether(exitAnimator, fadeOutAnimator)
+            val exitSet = AnimatorSet()
+            exitSet.playTogether(exitAnimator, fadeOutAnimator)
 
-        val sequence = AnimatorSet()
-        sequence.play(bounceAnimator).before(exitSet)
-        sequence.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                super.onAnimationEnd(animation)
+            val sequence = AnimatorSet()
+            sequence.play(bounceAnimator).before(exitSet)
+            sequence.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
 
-                currentQuestionIndex = (currentQuestionIndex + 1) % questions.size
-                Log.d("!!3!", ""+currentQuestionIndex +" " + questions.size)
+                    currentQuestionIndex = (currentQuestionIndex + 1) % questions.size
+                    shouldShowNextQuestion = true
 
-                Handler(Looper.getMainLooper()).postDelayed({
-                    val nextQuestion = questions[currentQuestionIndex]
-                    onQuestionShow?.invoke(nextQuestion)
-
-                    performEnterAnimation()
-                }, 300)
-            }
-        })
-        sequence.start()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        val nextQuestion = questions[currentQuestionIndex]
+                        onQuestionShow?.invoke(nextQuestion)
+                        performEnterAnimation()
+                    }, 500)
+                }
+            })
+            sequence.start()
+        } else {
+            isAnimating = false
+            shouldShowNextQuestion = false
+        }
     }
 
-    fun skipToNextQuestion() {
-        if (isAnimating) return
-
-        currentQuestionIndex = (currentQuestionIndex + 1) % questions.size
-
-        val question = questions[currentQuestionIndex]
-        onQuestionShow?.invoke(question)
-    }
+    fun getCurrentIndex(): Int = currentQuestionIndex
 
     fun getCurrentQuestion(): String? {
         return if (questions.isNotEmpty() && currentQuestionIndex < questions.size) {
             questions[currentQuestionIndex]
-        } else {
-            null
-        }
-    }
-
-    fun getNextQuestion(): String? {
-        val nextIndex = (currentQuestionIndex + 1) % questions.size
-        return if (questions.isNotEmpty() && nextIndex < questions.size) {
-            questions[nextIndex]
         } else {
             null
         }
@@ -153,13 +142,6 @@ class CardViewAnimator(
         cardView.translationX = 0f
         cardView.alpha = 1f
         cardView.scaleY = 1f
-
-        if (questions.isNotEmpty()) {
-            onQuestionShow?.invoke(questions[0])
-        }
+        shouldShowNextQuestion = false
     }
-
-    fun getCurrentIndex(): Int = currentQuestionIndex
-
-    fun hasNextQuestion(): Boolean = questions.isNotEmpty()
 }
