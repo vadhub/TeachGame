@@ -14,15 +14,15 @@ class AnswerBoxManager(
     private var current: TextView? = null
     private var currentCardView: CardView? = null
 
-    fun setAnswers(question: Question) {
+    fun setAnswers(question: Question, exWords: List<String>) {
 
         hideCurrentCard()
 
         val randomIndex = Random.nextInt(answers.size - 1)
-        answers[randomIndex].text = question.correctAnswer
+        answers[randomIndex].text = exWords[0] + " " + question.correctAnswer
 
         answers.filterIndexed { index, _ -> index != randomIndex }.forEachIndexed { i, textView ->
-            textView.text = question.incorrectAnswers[i]
+            textView.text = exWords[(i+1) % exWords.size] + " " + question.incorrectAnswers[i]
         }
     }
 

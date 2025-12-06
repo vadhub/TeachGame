@@ -56,6 +56,7 @@ class LearnFragment : Fragment() {
     private var isWaitingForEvaluation = false
     private var answeredTables = mutableSetOf<Int>()
     private var currentAnswerCorrect: Boolean = false
+    private var exWords = mutableListOf<String>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -157,7 +158,7 @@ class LearnFragment : Fragment() {
                 answerButtonManager.gone()
                 goneHand()
                 currentQuestionIndex = cardViewAnimator.getCurrentIndex()+1
-                answerBoxManager.setAnswers(questions[currentQuestionIndex])
+                answerBoxManager.setAnswers(questions[currentQuestionIndex], exWords)
             } else {
                 answerBoxManager.hideCurrentCard()
                 answerButtonManager.gone()
@@ -172,7 +173,9 @@ class LearnFragment : Fragment() {
     }
 
     private fun setupQuestions() {
-        questions = questionsManager.get()
+        exWords = mutableListOf("Наверное...", "Думаю", "Не знаю, наверное", "Может").shuffled() as MutableList<String>
+        questions = questionsManager.get().shuffled()
+        questions = questions.subList(0, 5)
         cardViewAnimator.setQuestions(questions.map { it.text })
     }
 
@@ -222,7 +225,7 @@ class LearnFragment : Fragment() {
     private fun startLearningCycle() {
         answeredTables.clear()
         val firstQuestion = questions[currentQuestionIndex]
-        answerBoxManager.setAnswers(firstQuestion)
+        answerBoxManager.setAnswers(firstQuestion, exWords)
 
         cardViewAnimator.showNextQuestion()
     }
