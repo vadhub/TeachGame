@@ -19,10 +19,10 @@ class AnswerBoxManager(
         hideCurrentCard()
 
         val randomIndex = Random.nextInt(answers.size - 1)
-        answers[randomIndex].text = question.answerTrue
+        answers[randomIndex].text = question.correctAnswer
 
         answers.filterIndexed { index, _ -> index != randomIndex }.forEachIndexed { i, textView ->
-            textView.text = question.variants[i]
+            textView.text = question.incorrectAnswers[i]
         }
     }
 

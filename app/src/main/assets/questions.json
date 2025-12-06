@@ -1,0 +1,152 @@
+[
+  {
+    "question": "Сколько будет 5 × 5?",
+    "correctAnswer": "25",
+    "incorrectAnswers": ["10", "15", "20"]
+  },
+  {
+    "question": "Как называется самая длинная река в мире?",
+    "correctAnswer": "Нил",
+    "incorrectAnswers": ["Амазонка", "Волга", "Миссисипи"]
+  },
+  {
+    "question": "Сколько дней в феврале в високосный год?",
+    "correctAnswer": "29",
+    "incorrectAnswers": ["28", "30", "31"]
+  },
+  {
+    "question": "Какая планета самая большая в Солнечной системе?",
+    "correctAnswer": "Юпитер",
+    "incorrectAnswers": ["Земля", "Сатурн", "Марс"]
+  },
+  {
+    "question": "Сколько сторон у квадрата?",
+    "correctAnswer": "4",
+    "incorrectAnswers": ["3", "5", "6"]
+  },
+  {
+    "question": "Как называется столица Франции?",
+    "correctAnswer": "Париж",
+    "incorrectAnswers": ["Лондон", "Берлин", "Мадрид"]
+  },
+  {
+    "question": "Сколько будет 100 ÷ 4?",
+    "correctAnswer": "25",
+    "incorrectAnswers": ["20", "30", "15"]
+  },
+  {
+    "question": "Какое животное является символом Австралии?",
+    "correctAnswer": "Кенгуру",
+    "incorrectAnswers": ["Коала", "Утконос", "Эму"]
+  },
+  {
+    "question": "Сколько часов в сутках?",
+    "correctAnswer": "24",
+    "incorrectAnswers": ["12", "36", "48"]
+  },
+  {
+    "question": "Какой цвет получится при смешении синего и желтого?",
+    "correctAnswer": "Зеленый",
+    "incorrectAnswers": ["Фиолетовый", "Оранжевый", "Красный"]
+  },
+  {
+    "question": "Сколько континентов на Земле?",
+    "correctAnswer": "7",
+    "incorrectAnswers": ["5", "6", "8"]
+  },
+  {
+    "question": "Как называется спутник Земли?",
+    "correctAnswer": "Луна",
+    "incorrectAnswers": ["Марс", "Солнце", "Венера"]
+  },
+  {
+    "question": "Сколько будет 3²?",
+    "correctAnswer": "9",
+    "incorrectAnswers": ["6", "27", "12"]
+  },
+  {
+    "question": "Какая самая высокая гора в мире?",
+    "correctAnswer": "Эверест",
+    "incorrectAnswers": ["Килиманджаро", "Монблан", "Эльбрус"]
+  },
+  {
+    "question": "Сколько пальцев на одной руке?",
+    "correctAnswer": "5",
+    "incorrectAnswers": ["4", "6", "10"]
+  },
+  {
+    "question": "Какой язык является официальным в Бразилии?",
+    "correctAnswer": "Португальский",
+    "incorrectAnswers": ["Испанский", "Английский", "Бразильский"]
+  },
+  {
+    "question": "Сколько месяцев в году?",
+    "correctAnswer": "12",
+    "incorrectAnswers": ["10", "11", "13"]
+  },
+  {
+    "question": "Какое животное дает молоко?",
+    "correctAnswer": "Корова",
+    "incorrectAnswers": ["Свинья", "Курица", "Овца"]
+  },
+  {
+    "question": "Сколько будет 15 - 7?",
+    "correctAnswer": "8",
+    "incorrectAnswers": ["7", "9", "10"]
+  },
+  {
+    "question": "Как называется самая большая пустыня в мире?",
+    "correctAnswer": "Сахара",
+    "incorrectAnswers": ["Гоби", "Каракумы", "Антарктическая"]
+  },
+  {
+    "question": "Сколько ног у паука?",
+    "correctAnswer": "8",
+    "incorrectAnswers": ["6", "10", "12"]
+  },
+  {
+    "question": "Какая страна изобрела бумагу?",
+    "correctAnswer": "Китай",
+    "incorrectAnswers": ["Египет", "Греция", "Индия"]
+  },
+  {
+    "question": "Сколько будет ¼ от 100?",
+    "correctAnswer": "25",
+    "incorrectAnswers": ["10", "50", "75"]
+  },
+  {
+    "question": "Как называется самая маленькая птица в мире?",
+    "correctAnswer": "Колибри",
+    "incorrectAnswers": ["Воробей", "Синица", "Стриж"]
+  },
+  {
+    "question": "Сколько градусов в прямом угле?",
+    "correctAnswer": "90",
+    "incorrectAnswers": ["45", "180", "360"]
+  },
+  {
+    "question": "Какой океан самый большой?",
+    "correctAnswer": "Тихий",
+    "incorrectAnswers": ["Атлантический", "Индийский", "Северный Ледовитый"]
+  },
+  {
+    "question": "Сколько колес у автомобиля?",
+    "correctAnswer": "4",
+    "incorrectAnswers": ["3", "5", "6"]
+  },
+  {
+    "question": "Какая планета известна своими кольцами?",
+    "correctAnswer": "Сатурн",
+    "incorrectAnswers": ["Юпитер", "Уран", "Нептун"]
+  },
+  {
+    "question": "Сколько будет 0.5 × 10?",
+    "correctAnswer": "5",
+    "incorrectAnswers": ["0.5", "50", "1"]
+  },
+  {
+    "question": "Как называется столица Италии?",
+    "correctAnswer": "Рим",
+    "incorrectAnswers": ["Милан", "Венеция", "Флоренция"]
+  }
+]

@@ -2,8 +2,6 @@ package com.vlg.teachgame.state
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +15,7 @@ import com.vlg.teachgame.model.AnswerButtonManager
 import com.vlg.teachgame.model.CardViewAnimator
 import com.vlg.teachgame.model.HintAnimationManager
 import com.vlg.teachgame.Navigator
+import com.vlg.teachgame.QuestionsManager
 import com.vlg.teachgame.R
 import com.vlg.teachgame.data.Question
 import com.vlg.teachgame.model.AnswerBoxManager
@@ -24,6 +23,7 @@ import com.vlg.teachgame.model.AnswerBoxManager
 class LearnFragment : Fragment() {
 
     private lateinit var navigator: Navigator
+    private lateinit var questionsManager: QuestionsManager
 
     private lateinit var table1: FrameLayout
     private lateinit var table2: FrameLayout
@@ -60,6 +60,7 @@ class LearnFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigator = context as Navigator
+        questionsManager = context as QuestionsManager
     }
 
     override fun onCreateView(
@@ -171,21 +172,7 @@ class LearnFragment : Fragment() {
     }
 
     private fun setupQuestions() {
-        questions = listOf(
-            Question(
-                "Сколько будет 1 в 0 степени?",
-                "Будет 1",
-                listOf("Будет 0", "Думаю 64", " Может -1?")
-            ),
-            Question("Какая столица Германии?", "Берлин", listOf("Вена", "Юпитер", "Волгоград")),
-            Question(
-                "Сколько основных цетов?",
-                "Три цвета",
-                listOf("Наверное 7", "Думаю 4", " Может 7?")
-            ),
-            Question("Сколько будет 2 + 2 * 2?", "6", listOf("8", "10", "52!")),
-        )
-
+        questions = questionsManager.get()
         cardViewAnimator.setQuestions(questions.map { it.text })
     }
 
@@ -210,7 +197,7 @@ class LearnFragment : Fragment() {
             else -> ""
         }
 
-        currentAnswerCorrect = selectedAnswer == questions[currentQuestionIndex].answerTrue
+        currentAnswerCorrect = selectedAnswer == questions[currentQuestionIndex].correctAnswer
 
         isAnswerSelected = true
         goneHand()
