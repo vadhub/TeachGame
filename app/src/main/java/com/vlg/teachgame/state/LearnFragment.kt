@@ -15,7 +15,7 @@ import com.vlg.teachgame.model.AnswerButtonManager
 import com.vlg.teachgame.model.CardViewAnimator
 import com.vlg.teachgame.model.HintAnimationManager
 import com.vlg.teachgame.Navigator
-import com.vlg.teachgame.QuestionsManager
+import com.vlg.teachgame.GameManager
 import com.vlg.teachgame.R
 import com.vlg.teachgame.data.Question
 import com.vlg.teachgame.model.AnswerBoxManager
@@ -23,7 +23,7 @@ import com.vlg.teachgame.model.AnswerBoxManager
 class LearnFragment : Fragment() {
 
     private lateinit var navigator: Navigator
-    private lateinit var questionsManager: QuestionsManager
+    private lateinit var gameManager: GameManager
 
     private lateinit var table1: FrameLayout
     private lateinit var table2: FrameLayout
@@ -61,7 +61,7 @@ class LearnFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigator = context as Navigator
-        questionsManager = context as QuestionsManager
+        gameManager = context as GameManager
     }
 
     override fun onCreateView(
@@ -159,6 +159,7 @@ class LearnFragment : Fragment() {
                 goneHand()
                 currentQuestionIndex = cardViewAnimator.getCurrentIndex()+1
                 answerBoxManager.setAnswers(questions[currentQuestionIndex], exWords)
+                gameManager.increaseNumQuestion()
             } else {
                 answerBoxManager.hideCurrentCard()
                 answerButtonManager.gone()
@@ -174,7 +175,7 @@ class LearnFragment : Fragment() {
 
     private fun setupQuestions() {
         exWords = mutableListOf("Наверное...", "Думаю", "Не знаю, наверное", "Может").shuffled() as MutableList<String>
-        questions = questionsManager.get().shuffled()
+        questions = gameManager.get().shuffled()
         questions = questions.subList(0, 5)
         cardViewAnimator.setQuestions(questions.map { it.text })
     }
@@ -225,6 +226,7 @@ class LearnFragment : Fragment() {
     private fun startLearningCycle() {
         answeredTables.clear()
         val firstQuestion = questions[currentQuestionIndex]
+        gameManager.increaseNumQuestion()
         answerBoxManager.setAnswers(firstQuestion, exWords)
 
         cardViewAnimator.showNextQuestion()

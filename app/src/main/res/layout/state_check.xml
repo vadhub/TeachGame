@@ -13,6 +13,16 @@
         android:scaleType="fitXY"
         android:src="@drawable/auitory" />
 
+    <FrameLayout
+        android:id="@+id/place"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/verticalBoard"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="64dp"
+        android:background="@color/red"
+        android:layout_width="10dp"
+        android:layout_height="10dp"/>
+
     <View
         android:id="@+id/verticalBoard"
         android:layout_width="match_parent"
@@ -44,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintVertical_bias="0.7" />
 
     <ImageView
         android:id="@+id/vaysa"
@@ -55,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintVertical_bias="0.9" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -157,5 +167,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/verticalBoard"
         app:layout_constraintVertical_bias="0.5" />
+
+    <Button
+        android:id="@+id/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"
+        android:text="Следующий"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/answerButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/trueButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="Верно"
+            android:textSize="18sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/falseButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="Неверно"
+            android:textSize="18sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
