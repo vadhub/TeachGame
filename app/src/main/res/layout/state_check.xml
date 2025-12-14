@@ -68,6 +68,7 @@
         app:layout_constraintVertical_bias="0.9" />
 
     <LinearLayout
+        android:id="@+id/topRange"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottomRange">
@@ -156,6 +157,26 @@
         </FrameLayout>
 
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/homework"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/teacherTable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/topRange">
+
+        <TextView
+            android:id="@+id/textHomework"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:textSize="24sp"
+            tools:text="ASDddddddddddddddddddfffgg\nrfffvrerfrefrerffr" />
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/teacherTable"
