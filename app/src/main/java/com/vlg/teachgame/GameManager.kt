@@ -1,9 +1,11 @@
 package com.vlg.teachgame
 
+import com.vlg.teachgame.data.Homework
 import com.vlg.teachgame.data.Question
 
 interface GameManager {
-    fun get(): List<Question>
+    fun getQuestions(): List<Question>
+    fun getHomeworks(): List<Homework>
     fun complete()
     fun increaseNumQuestion()
 }

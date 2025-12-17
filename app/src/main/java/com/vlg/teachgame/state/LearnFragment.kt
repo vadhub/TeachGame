@@ -175,7 +175,7 @@ class LearnFragment : Fragment() {
 
     private fun setupQuestions() {
         exWords = mutableListOf("Наверное...", "Думаю", "Не знаю, наверное", "Может").shuffled() as MutableList<String>
-        questions = gameManager.get().shuffled()
+        questions = gameManager.getQuestions().shuffled()
         questions = questions.subList(0, 5)
         cardViewAnimator.setQuestions(questions.map { it.text })
     }
