@@ -2,6 +2,7 @@ package com.vlg.teachgame.state
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.vlg.teachgame.GameManager
 import com.vlg.teachgame.Navigator
 import com.vlg.teachgame.R
+import com.vlg.teachgame.data.Question
 import com.vlg.teachgame.model.Alive
 import com.vlg.teachgame.model.CardViewAnimatorVertical
 
@@ -66,14 +68,16 @@ class HomeworkFragment : Fragment() {
         val animatorSet3 = Alive().startWobbleAnimation(masha)
 
         var homework = gameManager.getHomeworks().shuffled()
-        homework = homework.subList(0, 2)
-        cardAnimator.setQuestions(homework.map { it.text })
+        homework = homework.subList(0, 3)
+        cardAnimator.setQuestions(homework)
 
         cardAnimator.setOnQuestionShowListener { question ->
-            textHomeWork.text = question
+            Log.d("!!!", question.toString())
+            textHomeWork.text = question.text
         }
 
         cardAnimator.setOnAnswerProcessedListener { isAnswerAccepted ->
+            Log.d("!!!", "react: " + isAnswerAccepted)
             if (isAnswerAccepted) {
 
             } else {

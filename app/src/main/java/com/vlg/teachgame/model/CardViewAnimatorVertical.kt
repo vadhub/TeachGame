@@ -6,28 +6,31 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import androidx.cardview.widget.CardView
 import androidx.core.animation.doOnEnd
+import com.vlg.teachgame.data.Homework
 
 class CardViewAnimatorVertical(
     private val cardView: CardView,
     private val screenHeight: Int
 ) {
     private var currentQuestionIndex = 0
-    private var questions: List<String> = emptyList()
-    private var onQuestionShow: ((String) -> Unit)? = null
+    private var questions: List<Homework> = emptyList()
+    private var onQuestionShow: ((Homework) -> Unit)? = null
     private var onAnswerProcessed: ((Boolean) -> Unit)? = null
     private var onAnimationComplete: (() -> Unit)? = null
     private var isAnimating = false
     private var shouldShowNextQuestion = false
 
-    fun setQuestions(questions: List<String>) {
+    fun setQuestions(questions: List<Homework>) {
+        Log.d("!!!", questions.toString())
         this.questions = questions
     }
 
-    fun setOnQuestionShowListener(listener: (String) -> Unit) {
+    fun setOnQuestionShowListener(listener: (Homework) -> Unit) {
         this.onQuestionShow = listener
     }
 
@@ -49,6 +52,8 @@ class CardViewAnimatorVertical(
         if (isAnimating || questions.isEmpty()) return
 
         val question = questions[currentQuestionIndex]
+        Log.d("!!!", currentQuestionIndex.toString() + questions.size)
+        currentQuestionIndex++
         onQuestionShow?.invoke(question)
         shouldShowNextQuestion = true
         performEnterAnimation()
@@ -111,10 +116,6 @@ class CardViewAnimatorVertical(
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
 
-                if (isAnswerAccepted) {
-                    currentQuestionIndex = (currentQuestionIndex + 1) % questions.size
-                }
-
                 isAnimating = false
                 shouldShowNextQuestion = false
 
@@ -126,7 +127,7 @@ class CardViewAnimatorVertical(
 
     fun getCurrentIndex(): Int = currentQuestionIndex
 
-    fun getCurrentQuestion(): String? {
+    fun getCurrentQuestion(): Homework? {
         return if (questions.isNotEmpty() && currentQuestionIndex < questions.size) {
             questions[currentQuestionIndex]
         } else {
