@@ -17,11 +17,13 @@ import com.vlg.teachgame.R
 import com.vlg.teachgame.data.Question
 import com.vlg.teachgame.model.Alive
 import com.vlg.teachgame.model.CardViewAnimatorVertical
+import com.vlg.teachgame.model.Management
 
 class HomeworkFragment : Fragment() {
 
     private lateinit var navigator: Navigator
     private lateinit var gameManager: GameManager
+    private lateinit var management: Management
 
     private var countStudents = 3
     private lateinit var cardAnimator: CardViewAnimatorVertical
@@ -41,6 +43,7 @@ class HomeworkFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        management = Management()
 
         val displayMetrics = resources.displayMetrics
         val screenHeight = displayMetrics.heightPixels
@@ -76,13 +79,9 @@ class HomeworkFragment : Fragment() {
             textHomeWork.text = question.text
         }
 
-        cardAnimator.setOnAnswerProcessedListener { isAnswerAccepted ->
-            Log.d("!!!", "react: " + isAnswerAccepted)
-            if (isAnswerAccepted) {
-
-            } else {
-
-            }
+        cardAnimator.setOnAnswerProcessedListener { react, answerAccuracy ->
+            Log.d("!!!", "react: " + react)
+            management.check(answerAccuracy, react)
         }
 
         nextButton.setOnClickListener {
