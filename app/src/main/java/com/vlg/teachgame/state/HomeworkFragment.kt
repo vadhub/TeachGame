@@ -23,7 +23,6 @@ class HomeworkFragment : Fragment() {
 
     private lateinit var navigator: Navigator
     private lateinit var gameManager: GameManager
-    private lateinit var management: Management
 
     private var countStudents = 3
     private lateinit var cardAnimator: CardViewAnimatorVertical
@@ -43,7 +42,6 @@ class HomeworkFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        management = Management()
 
         val displayMetrics = resources.displayMetrics
         val screenHeight = displayMetrics.heightPixels
@@ -81,13 +79,16 @@ class HomeworkFragment : Fragment() {
 
         cardAnimator.setOnAnswerProcessedListener { react, answerAccuracy ->
             Log.d("!!!", "react: " + react)
-            management.check(answerAccuracy, react)
+            gameManager.checkTeacher(answerAccuracy, react)
         }
 
         nextButton.setOnClickListener {
             // after click next cardview is visible
-            cardView.visibility = View.VISIBLE
-            cardAnimator.showNextQuestion()
+            if (countStudents > 0) {
+                cardView.visibility = View.VISIBLE
+                cardAnimator.showNextQuestion()
+            }
+
             when (countStudents) {
                 3 -> {
                     animatorSet2.cancel()
@@ -111,6 +112,10 @@ class HomeworkFragment : Fragment() {
                         visibleButtonEvaluate(correctButton, incorrectButton)
                         goneNextButton(nextButton)
                     }
+                }
+
+                0 -> {
+                    gameManager.completeHomeWork()
                 }
             }
 
