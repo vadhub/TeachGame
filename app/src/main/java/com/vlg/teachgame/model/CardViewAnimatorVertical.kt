@@ -51,7 +51,6 @@ class CardViewAnimatorVertical(
         val question = questions[currentQuestionIndex]
         onQuestionShow?.invoke(question)
         shouldShowNextQuestion = true
-
         performEnterAnimation()
     }
 
@@ -88,46 +87,41 @@ class CardViewAnimatorVertical(
 
         onAnswerProcessed?.invoke(isAnswerAccepted)
 
-        if (isAnswerAccepted) {
-            val bounceAnimator = ObjectAnimator.ofFloat(cardView, "scaleY", 1f, 0.95f, 1f)
-            bounceAnimator.duration = 200
+        val bounceAnimator = ObjectAnimator.ofFloat(cardView, "scaleY", 1f, 0.95f, 1f)
+        bounceAnimator.duration = 200
 
-            val exitAnimator = ObjectAnimator.ofFloat(
-                cardView,
-                "translationY",
-                0f,
-                -screenHeight.toFloat()
-            )
-            exitAnimator.duration = 800
-            exitAnimator.interpolator = AccelerateInterpolator()
+        val exitAnimator = ObjectAnimator.ofFloat(
+            cardView,
+            "translationY",
+            0f,
+            -screenHeight.toFloat()
+        )
+        exitAnimator.duration = 800
+        exitAnimator.interpolator = AccelerateInterpolator()
 
-            val fadeOutAnimator = ObjectAnimator.ofFloat(cardView, "alpha", 1f, 0f)
-            fadeOutAnimator.duration = 400
+        val fadeOutAnimator = ObjectAnimator.ofFloat(cardView, "alpha", 1f, 0f)
+        fadeOutAnimator.duration = 400
 
-            val exitSet = AnimatorSet()
-            exitSet.playTogether(exitAnimator, fadeOutAnimator)
+        val exitSet = AnimatorSet()
+        exitSet.playTogether(exitAnimator, fadeOutAnimator)
 
-            val sequence = AnimatorSet()
-            sequence.play(bounceAnimator).before(exitSet)
-            sequence.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
+        val sequence = AnimatorSet()
+        sequence.play(bounceAnimator).before(exitSet)
+        sequence.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                super.onAnimationEnd(animation)
 
+                if (isAnswerAccepted) {
                     currentQuestionIndex = (currentQuestionIndex + 1) % questions.size
-                    shouldShowNextQuestion = true
-
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        val nextQuestion = questions[currentQuestionIndex]
-                        onQuestionShow?.invoke(nextQuestion)
-                        performEnterAnimation()
-                    }, 500)
                 }
-            })
-            sequence.start()
-        } else {
-            isAnimating = false
-            shouldShowNextQuestion = false
-        }
+
+                isAnimating = false
+                shouldShowNextQuestion = false
+
+                onAnimationComplete?.invoke()
+            }
+        })
+        sequence.start()
     }
 
     fun getCurrentIndex(): Int = currentQuestionIndex

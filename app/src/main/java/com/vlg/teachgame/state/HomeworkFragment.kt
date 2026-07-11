@@ -44,6 +44,10 @@ class HomeworkFragment : Fragment() {
         val screenHeight = displayMetrics.heightPixels
 
         val cardView = view.findViewById<CardView>(R.id.homework)
+
+        // before start card with question is GONE visibility
+        cardView.visibility = View.GONE
+
         val textHomeWork = view.findViewById<TextView>(R.id.textHomework)
 
         cardAnimator = CardViewAnimatorVertical(cardView, screenHeight)
@@ -78,8 +82,9 @@ class HomeworkFragment : Fragment() {
         }
 
         nextButton.setOnClickListener {
-
-            cardAnimator.startAnimationCycle()
+            // after click next cardview is visible
+            cardView.visibility = View.VISIBLE
+            cardAnimator.showNextQuestion()
             when (countStudents) {
                 3 -> {
                     animatorSet2.cancel()
