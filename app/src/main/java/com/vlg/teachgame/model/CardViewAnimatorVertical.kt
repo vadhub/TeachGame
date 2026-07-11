@@ -20,7 +20,7 @@ class CardViewAnimatorVertical(
     private var currentQuestionIndex = 0
     private var questions: List<Homework> = emptyList()
     private var onQuestionShow: ((Homework) -> Unit)? = null
-    private var onAnswerProcessed: ((Boolean) -> Unit)? = null
+    private var onAnswerProcessed: ((Boolean, Boolean) -> Unit)? = null
     private var onAnimationComplete: (() -> Unit)? = null
     private var isAnimating = false
     private var shouldShowNextQuestion = false
@@ -34,7 +34,7 @@ class CardViewAnimatorVertical(
         this.onQuestionShow = listener
     }
 
-    fun setOnAnswerProcessedListener(listener: (Boolean) -> Unit) {
+    fun setOnAnswerProcessedListener(listener: (Boolean, Boolean) -> Unit) {
         this.onAnswerProcessed = listener
     }
 
@@ -53,7 +53,6 @@ class CardViewAnimatorVertical(
 
         val question = questions[currentQuestionIndex]
         Log.d("!!!", currentQuestionIndex.toString() + questions.size)
-        currentQuestionIndex++
         onQuestionShow?.invoke(question)
         shouldShowNextQuestion = true
         performEnterAnimation()
@@ -90,7 +89,7 @@ class CardViewAnimatorVertical(
         if (isAnimating) return
         isAnimating = true
 
-        onAnswerProcessed?.invoke(isAnswerAccepted)
+        onAnswerProcessed?.invoke(isAnswerAccepted, questions[currentQuestionIndex].isCorrect)
 
         val bounceAnimator = ObjectAnimator.ofFloat(cardView, "scaleY", 1f, 0.95f, 1f)
         bounceAnimator.duration = 200
@@ -115,10 +114,9 @@ class CardViewAnimatorVertical(
         sequence.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
-
                 isAnimating = false
                 shouldShowNextQuestion = false
-
+                currentQuestionIndex++
                 onAnimationComplete?.invoke()
             }
         })

@@ -18,7 +18,7 @@ class StatsDialogFragment : DialogFragment() {
         private const val ARG_CORRECT = "correct"
         private const val ARG_MISTAKES = "mistakes"
 
-        fun newInstance(correct: Int, incorrect: Int, mistakes: Int): StatsDialogFragment {
+        fun newInstance(correct: Int, mistakes: Int): StatsDialogFragment {
             val fragment = StatsDialogFragment()
             val args = Bundle()
             args.putInt(ARG_CORRECT, correct)

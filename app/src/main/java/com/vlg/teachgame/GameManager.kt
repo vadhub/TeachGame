@@ -6,6 +6,8 @@ import com.vlg.teachgame.data.Question
 interface GameManager {
     fun getQuestions(): List<Question>
     fun getHomeworks(): List<Homework>
-    fun complete()
+    fun completeLearn()
+    fun completeHomeWork()
     fun increaseNumQuestion()
+    fun checkTeacher(isAnswerAccuracy: Boolean, teacherReact: Boolean)
 }
