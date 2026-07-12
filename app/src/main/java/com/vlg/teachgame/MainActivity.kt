@@ -11,6 +11,7 @@ import com.vlg.teachgame.model.Management
 import com.vlg.teachgame.model.PreferenceManager
 import com.vlg.teachgame.state.HomeworkFragment
 import com.vlg.teachgame.state.LearnFragment
+import com.vlg.teachgame.state.MenuFragment
 
 class MainActivity : AppCompatActivity(), Navigator, GameManager {
 
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity(), Navigator, GameManager {
         questions = FileManager().parseQuestions(assets.open("questions.json"))
         homeworks = FileManager().parseHomeworks(assets.open("homework.json"))
         preferenceManager = PreferenceManager(this)
-        startFragment(if (preferenceManager.isHomework()) HomeworkFragment() else LearnFragment())
+        startFragment(MenuFragment())
     }
 
     override fun startFragment(fragment: Fragment) {
@@ -52,14 +53,18 @@ class MainActivity : AppCompatActivity(), Navigator, GameManager {
     override fun getHomeworks() = homeworks
 
     override fun completeLearn() {
-        preferenceManager.saveState(true)
-        startFragment(HomeworkFragment())
+        showStatsDialog {
+            preferenceManager.saveState(true)
+            startFragment(MenuFragment())
+            management.reset()
+        }
     }
 
     override fun completeHomeWork() {
         showStatsDialog {
             preferenceManager.saveState(false)
-            startFragment(LearnFragment())
+            startFragment(MenuFragment())
+            management.reset()
         }
     }
 

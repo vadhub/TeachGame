@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF3E0"
+    android:paddingBottom="24dp">
+
+    <TextView
+        android:id="@+id/schoolTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Коридор"
+        android:textColor="#3E2723"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/petya"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/pers_1"
+        app:layout_constraintBottom_toTopOf="@id/ringButton"
+        app:layout_constraintEnd_toStartOf="@+id/vasya"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/schoolTitle"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <ImageView
+        android:id="@+id/vasya"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/pers_1"
+        app:layout_constraintBottom_toBottomOf="@+id/petya"
+        app:layout_constraintEnd_toStartOf="@+id/masha"
+        app:layout_constraintStart_toEndOf="@+id/petya"
+        app:layout_constraintTop_toTopOf="@+id/petya" />
+
+    <ImageView
+        android:id="@+id/masha"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/pers_1"
+        app:layout_constraintBottom_toBottomOf="@+id/petya"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vasya"
+        app:layout_constraintTop_toTopOf="@+id/petya" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ringButton"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/red_round_button"
+        android:backgroundTint="@null"
+        android:elevation="8dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="ЗВОНОК"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
