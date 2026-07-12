@@ -14,4 +14,9 @@ class Management {
 
     fun getMistakesTeacher() = mistakesTeacher
     fun getCorrectOfTeacher() = correctOfTeacher
+
+    fun reset() {
+        mistakesTeacher = 0
+        correctOfTeacher = 0
+    }
 }
