@@ -153,11 +153,15 @@ class LearnFragment : Fragment() {
 
         cardViewAnimator.setOnAnswerProcessedListener { isAnswerAccepted, isTeacherMistake ->
 
+
             if (isAnswerAccepted) {
                 answerBoxManager.hideCurrentCard()
                 answerButtonManager.gone()
                 goneHand()
                 currentQuestionIndex = cardViewAnimator.getCurrentIndex()+1
+                if (currentQuestionIndex == 5) {
+                    gameManager.completeLearn()
+                }
                 answerBoxManager.setAnswers(questions[currentQuestionIndex], exWords)
                 gameManager.increaseNumQuestion()
             } else {
@@ -165,6 +169,8 @@ class LearnFragment : Fragment() {
                 answerButtonManager.gone()
                 visibleHandForNextStudent()
             }
+
+            gameManager.checkTeacher(isAnswerAccepted, isTeacherMistake)
         }
 
         cardViewAnimator.setOnAnimationCompleteListener {
