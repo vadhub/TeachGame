@@ -26,6 +26,9 @@ class HomeworkFragment : Fragment() {
 
     private var countStudents = 3
     private lateinit var cardAnimator: CardViewAnimatorVertical
+    private lateinit var studentViews: List<ImageView>
+    private var studentAnimators: MutableList<android.animation.Animator?> = mutableListOf()
+    private var currentStudentIndex = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -60,13 +63,28 @@ class HomeworkFragment : Fragment() {
         val correctButton = view.findViewById<Button>(R.id.trueButton)
         val incorrectButton = view.findViewById<Button>(R.id.falseButton)
 
-        val petya = view.findViewById<ImageView>(R.id.petya)
-        val vasya = view.findViewById<ImageView>(R.id.vaysa)
-        val masha = view.findViewById<ImageView>(R.id.masha)
+        val student3 = view.findViewById<ImageView>(R.id.vaysa)
+        val student2 = view.findViewById<ImageView>(R.id.masha)
+        val student1 = view.findViewById<ImageView>(R.id.petya)
+        studentViews = listOf(student1, student2, student3)
 
-        val animatorSet1 = Alive().startWobbleAnimation(petya)
-        val animatorSet2 = Alive().startWobbleAnimation(vasya)
-        val animatorSet3 = Alive().startWobbleAnimation(masha)
+        val allTextures = listOf(
+            R.drawable.pers_1,
+            R.drawable.pers_2,
+            R.drawable.pers_3,
+            R.drawable.pers_4
+        )
+        val selectedTextures = allTextures.shuffled().take(3)
+
+        studentViews.forEachIndexed { index, imageView ->
+            imageView.setImageResource(selectedTextures[index])
+        }
+
+        studentAnimators.clear()
+        studentViews.forEach { student ->
+            val animator = Alive().startWobbleAnimation(student)
+            studentAnimators.add(animator)
+        }
 
         var homework = gameManager.getHomeworks().shuffled()
         homework = homework.subList(0, 3)
@@ -83,40 +101,27 @@ class HomeworkFragment : Fragment() {
         }
 
         nextButton.setOnClickListener {
+            goneNextButton(nextButton)
+
             // after click next cardview is visible
             if (countStudents > 0) {
                 cardView.visibility = View.VISIBLE
                 cardAnimator.showNextQuestion()
             }
 
-            when (countStudents) {
-                3 -> {
-                    animatorSet2.cancel()
-                    Alive().moveWithSpringAnimation(vasya, verticalBoard) {
-                        visibleButtonEvaluate(correctButton, incorrectButton)
-                        goneNextButton(nextButton)
-                    }
+            currentStudentIndex = countStudents - 1
+            Log.d("!!!", currentStudentIndex.toString())
+            if (currentStudentIndex in studentViews.indices) {
+                val student = studentViews[currentStudentIndex]
+                studentAnimators[currentStudentIndex]?.cancel()
+                Alive().moveWithSpringAnimation(student, verticalBoard) {
+                    visibleButtonEvaluate(correctButton, incorrectButton)
+                    goneNextButton(nextButton)
                 }
+            }
 
-                2 -> {
-                    animatorSet3.cancel()
-                    Alive().moveWithSpringAnimation(masha, verticalBoard) {
-                        visibleButtonEvaluate(correctButton, incorrectButton)
-                        goneNextButton(nextButton)
-                    }
-                }
-
-                1 -> {
-                    animatorSet1.cancel()
-                    Alive().moveWithSpringAnimation(petya, verticalBoard) {
-                        visibleButtonEvaluate(correctButton, incorrectButton)
-                        goneNextButton(nextButton)
-                    }
-                }
-
-                0 -> {
-                    gameManager.completeHomeWork()
-                }
+            if (countStudents == 0) {
+                gameManager.completeHomeWork()
             }
 
             countStudents--
@@ -124,38 +129,26 @@ class HomeworkFragment : Fragment() {
 
         correctButton.setOnClickListener {
             cardAnimator.processAnswer(true)
-            moveRight(vasya, masha, petya)
+            if (currentStudentIndex != -1) {
+                moveRight(studentViews[currentStudentIndex])
+            }
             goneButtonEvaluate(correctButton, incorrectButton)
             visibleNextButton(nextButton)
         }
 
         incorrectButton.setOnClickListener {
             cardAnimator.processAnswer(false)
-            moveRight(vasya, masha, petya)
+            if (currentStudentIndex != -1) {
+                moveRight(studentViews[currentStudentIndex])
+            }
             goneButtonEvaluate(correctButton, incorrectButton)
             visibleNextButton(nextButton)
         }
 
     }
 
-    private fun moveRight(
-        vasya: ImageView,
-        masha: ImageView,
-        petya: ImageView
-    ) {
-        when (countStudents) {
-            2 -> {
-                Alive().moveRightAndHide(vasya)
-            }
-
-            1 -> {
-                Alive().moveRightAndHide(masha)
-            }
-
-            0 -> {
-                Alive().moveRightAndHide(petya)
-            }
-        }
+    private fun moveRight(student: ImageView) {
+        Alive().moveRightAndHide(student)
     }
 
     private fun visibleButtonEvaluate(correct: Button, incorrect: Button) {

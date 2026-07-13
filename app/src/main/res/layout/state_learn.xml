@@ -80,7 +80,7 @@
                 android:id="@+id/petya"
                 android:layout_width="140dp"
                 android:layout_height="120dp"
-                android:src="@drawable/pers_1" />
+                android:src="@drawable/pers_2" />
 
             <ImageView
                 android:layout_width="140dp"
@@ -203,7 +203,7 @@
                 android:id="@+id/masha"
                 android:layout_width="140dp"
                 android:layout_height="120dp"
-                android:src="@drawable/pers_1" />
+                android:src="@drawable/pers_3" />
 
             <ImageView
                 android:layout_width="140dp"
@@ -238,7 +238,7 @@
                 android:id="@+id/anton"
                 android:layout_width="140dp"
                 android:layout_height="120dp"
-                android:src="@drawable/pers_1" />
+                android:src="@drawable/pers_4" />
 
             <ImageView
                 android:layout_width="140dp"
