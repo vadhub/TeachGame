@@ -10,7 +10,7 @@ class PreferenceManager(context: Context) {
         context.getSharedPreferences("TeachGame", Context.MODE_PRIVATE)
 
     fun saveState(i: Boolean) {
-        prefs.edit { putBoolean("sate", i) }
+        prefs.edit { putBoolean("state", i) }
     }
 
     fun isHomework(): Boolean {
