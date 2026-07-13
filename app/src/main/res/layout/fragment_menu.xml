@@ -6,37 +6,30 @@
     android:background="#FFF3E0"
     android:paddingBottom="24dp">
 
-    <TextView
-        android:id="@+id/schoolTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Коридор"
-        android:textColor="#3E2723"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/corridor" />
 
     <ImageView
         android:id="@+id/petya"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="180dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/pers_1"
+        android:src="@drawable/pers_4"
         app:layout_constraintBottom_toTopOf="@id/ringButton"
         app:layout_constraintEnd_toStartOf="@+id/vasya"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/schoolTitle"
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <ImageView
         android:id="@+id/vasya"
         android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/pers_1"
@@ -48,10 +41,10 @@
     <ImageView
         android:id="@+id/masha"
         android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_height="190dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="32dp"
-        android:src="@drawable/pers_1"
+        android:src="@drawable/pers_2"
         app:layout_constraintBottom_toBottomOf="@+id/petya"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/vasya"
