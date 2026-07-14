@@ -161,6 +161,8 @@ class LearnFragment : Fragment() {
                 currentQuestionIndex = cardViewAnimator.getCurrentIndex()+1
                 if (currentQuestionIndex == 5) {
                     gameManager.completeLearn()
+                    isWaitingForEvaluation = true
+                    return@setOnAnswerProcessedListener
                 }
                 answerBoxManager.setAnswers(questions[currentQuestionIndex], exWords)
                 gameManager.increaseNumQuestion()
