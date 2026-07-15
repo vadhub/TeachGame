@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.vlg.teachgame.Navigator
@@ -39,6 +40,7 @@ class MenuFragment : Fragment() {
         val vasya = view.findViewById<ImageView>(R.id.vasya)
         val masha = view.findViewById<ImageView>(R.id.masha)
         val ringButton = view.findViewById<View>(R.id.ringButton)
+        val createdHomework = view.findViewById<Button>(R.id.createHomeworkButton)
 
         startWalkingAnimation(petya, 400f, 2000L)
         startWalkingAnimation(vasya, 300f, 1800L)
@@ -65,6 +67,11 @@ class MenuFragment : Fragment() {
                 }
                 .start()
         }
+
+        createdHomework.setOnClickListener {
+            navigator.startFragment(CreateHomeworkFragment())
+        }
+
     }
 
     /**

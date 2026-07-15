@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.vlg.teachgame.data.CreatedHomework
 import com.vlg.teachgame.data.Homework
 import com.vlg.teachgame.data.Question
 import com.vlg.teachgame.model.FileManager
@@ -12,22 +15,29 @@ import com.vlg.teachgame.model.PreferenceManager
 import com.vlg.teachgame.state.HomeworkFragment
 import com.vlg.teachgame.state.LearnFragment
 import com.vlg.teachgame.state.MenuFragment
+import kotlin.collections.addAll
+import kotlin.text.clear
 
 class MainActivity : AppCompatActivity(), Navigator, GameManager {
 
     private lateinit var management: Management
     private lateinit var questions: List<Question>
     private lateinit var homeworks: List<Homework>
+    private val createdHomeworks = mutableListOf<CreatedHomework>()
     private var numOfQuestion: Int = 0
     private lateinit var preferenceManager: PreferenceManager
+    private val fileManager = FileManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         management = Management()
-        questions = FileManager().parseQuestions(assets.open("questions.json"))
-        homeworks = FileManager().parseHomeworks(assets.open("homework.json"))
+        questions = fileManager.parseQuestions(assets.open("questions.json"))
+        homeworks = fileManager.parseHomeworks(assets.open("homework.json"))
         preferenceManager = PreferenceManager(this)
+        val list = fileManager.loadCreatedHomeworks(preferenceManager.getCreatedHomeworks())
+        createdHomeworks.clear()
+        createdHomeworks.addAll(list)
         startFragment(MenuFragment())
     }
 
@@ -50,7 +60,18 @@ class MainActivity : AppCompatActivity(), Navigator, GameManager {
     }
 
     override fun getQuestions() = questions
-    override fun getHomeworks() = homeworks
+    override fun getHomeworks(): List<Homework>{
+        val builtIn = homeworks
+        val created = createdHomeworks.map {
+            Homework(
+                text = it.question,
+                options = it.options,
+                correctIndices = it.correctIndices,
+                imageUri = it.imageUri
+            )
+        }
+        return builtIn + created
+    }
 
     override fun completeLearn() {
         showStatsDialog {
@@ -78,6 +99,13 @@ class MainActivity : AppCompatActivity(), Navigator, GameManager {
     override fun checkTeacher(isAnswerAccuracy: Boolean, teacherReact: Boolean) {
         management.check(isAnswerAccuracy, teacherReact)
     }
+
+    override fun addCreatedHomework(homework: CreatedHomework) {
+        createdHomeworks.add(homework)
+        preferenceManager.saveCreatedHomeworks(fileManager.saveCreatedHomeworks(createdHomeworks))
+    }
+
+    override fun getCreatedHomeworks(): List<CreatedHomework> = createdHomeworks
 
     private fun showStatsDialog(onComplete: () -> Unit) {
         val dialog = StatsDialogFragment.newInstance(

@@ -17,4 +17,12 @@ class PreferenceManager(context: Context) {
         return prefs.getBoolean("state", true)
     }
 
+    fun saveCreatedHomeworks(json: String) {
+        prefs.edit { putString("created_homeworks", json) }
+    }
+
+    fun getCreatedHomeworks(): String {
+        return prefs.getString("created_homeworks", "") ?: ""
+    }
+
 }

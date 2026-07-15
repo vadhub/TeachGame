@@ -29,17 +29,24 @@
             android:maxLines="3"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Варианты ответов (до 4):"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/optionsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Правильный ответ">
+        android:orientation="vertical">
+    </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/answerEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/addOptionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добавить вариант"/>
 
     <Button
         android:id="@+id/selectImageButton"
@@ -64,6 +71,6 @@
         android:layout_height="wrap_content"
         android:text="Сохранить задание"
         android:layout_marginTop="24dp"
-        android:backgroundTint="@color/primary"/>
+        android:backgroundTint="@color/material_dynamic_neutral30"/>
 
 </LinearLayout>

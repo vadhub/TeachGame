@@ -1,5 +1,6 @@
 package com.vlg.teachgame
 
+import com.vlg.teachgame.data.CreatedHomework
 import com.vlg.teachgame.data.Homework
 import com.vlg.teachgame.data.Question
 
@@ -10,4 +11,6 @@ interface GameManager {
     fun completeHomeWork()
     fun increaseNumQuestion()
     fun checkTeacher(isAnswerAccuracy: Boolean, teacherReact: Boolean)
+    fun addCreatedHomework(homework: CreatedHomework)
+    fun getCreatedHomeworks(): List<CreatedHomework>
 }

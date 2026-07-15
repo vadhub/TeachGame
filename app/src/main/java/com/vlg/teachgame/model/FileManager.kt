@@ -2,6 +2,7 @@ package com.vlg.teachgame.model
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.vlg.teachgame.data.CreatedHomework
 import com.vlg.teachgame.data.Homework
 import com.vlg.teachgame.data.Question
 import java.io.BufferedReader
@@ -31,10 +32,28 @@ class FileManager {
     fun parseQuestions(inputStream: InputStream) =
         parseQuestions(convertInputStreamToString(inputStream))
 
-    fun parseHomeworks(jsonString: String): List<Homework> {
+    fun parseHomeworks(json: String): List<Homework> {
+        if (json.isNotEmpty()) {
+            val gson = Gson()
+            val type = object : TypeToken<List<Homework>>() {}.type
+            return gson.fromJson(json, type)
+        }
+        return emptyList()
+    }
+
+    fun saveCreatedHomeworks(createdHomeworks: List<CreatedHomework>): String {
         val gson = Gson()
-        val type = object : TypeToken<List<Homework>>() {}.type
-        return gson.fromJson(jsonString, type)
+        val json = gson.toJson(createdHomeworks)
+        return json
+    }
+
+    fun loadCreatedHomeworks(json: String): List<CreatedHomework>  {
+        if (json.isNotEmpty()) {
+            val gson = Gson()
+            val type = object : TypeToken<List<CreatedHomework>>() {}.type
+            return gson.fromJson(json, type)
+        }
+        return emptyList()
     }
 
     fun parseHomeworks(inputStream: InputStream) =

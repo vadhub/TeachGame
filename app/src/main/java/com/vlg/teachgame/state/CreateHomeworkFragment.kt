@@ -5,12 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -26,14 +27,15 @@ class CreateHomeworkFragment : Fragment() {
     private lateinit var gameManager: GameManager
 
     private lateinit var questionEdit: TextInputEditText
-    private lateinit var answerEdit: TextInputEditText
+    private lateinit var optionsContainer: LinearLayout
     private lateinit var previewImage: ImageView
     private lateinit var selectImageButton: Button
     private lateinit var saveButton: Button
+    private lateinit var addOptionButton: Button
 
+    private val optionViews = mutableListOf<View>()
     private var selectedImageUri: Uri? = null
 
-    // Регистрируем результат выбора изображения
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -67,10 +69,21 @@ class CreateHomeworkFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         questionEdit = view.findViewById(R.id.questionEdit)
-        answerEdit = view.findViewById(R.id.answerEdit)
+        optionsContainer = view.findViewById(R.id.optionsContainer)
         previewImage = view.findViewById(R.id.previewImage)
         selectImageButton = view.findViewById(R.id.selectImageButton)
         saveButton = view.findViewById(R.id.saveButton)
+        addOptionButton = view.findViewById(R.id.addOptionButton)
+        addOption()
+        addOption()
+
+        addOptionButton.setOnClickListener {
+            if (optionViews.size < 6) {
+                addOption()
+            } else {
+                Toast.makeText(requireContext(), "Максимум 6 вариантов", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         selectImageButton.setOnClickListener {
             openImagePicker()
@@ -81,6 +94,18 @@ class CreateHomeworkFragment : Fragment() {
         }
     }
 
+    private fun addOption() {
+        val inflater = LayoutInflater.from(context)
+        val optionView = inflater.inflate(R.layout.option_item, optionsContainer, false)
+        val removeButton = optionView.findViewById<android.widget.ImageButton>(R.id.removeOptionButton)
+        removeButton.setOnClickListener {
+            optionsContainer.removeView(optionView)
+            optionViews.remove(optionView)
+        }
+        optionsContainer.addView(optionView)
+        optionViews.add(optionView)
+    }
+
     private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             type = "image/*"
@@ -89,16 +114,44 @@ class CreateHomeworkFragment : Fragment() {
         pickImageLauncher.launch(Intent.createChooser(intent, "Выберите изображение"))
     }
 
+    private fun getOptions(): List<String> {
+        val options = mutableListOf<String>()
+        for (view in optionViews) {
+            val editText = view.findViewById<TextInputEditText>(R.id.optionEdit)
+            val text = editText.text.toString().trim()
+            if (text.isNotEmpty()) {
+                options.add(text)
+            }
+        }
+        return options
+    }
+
+    private fun getCorrectIndices(): List<Int> {
+        val indices = mutableListOf<Int>()
+        for ((index, view) in optionViews.withIndex()) {
+            val checkBox = view.findViewById<CheckBox>(R.id.optionCheck)
+            if (checkBox.isChecked) {
+                indices.add(index)
+            }
+        }
+        return indices
+    }
+
     private fun saveHomework() {
         val question = questionEdit.text.toString().trim()
-        val answer = answerEdit.text.toString().trim()
+        val options = getOptions()
+        val correctIndices = getCorrectIndices()
 
         if (question.isEmpty()) {
             Toast.makeText(requireContext(), "Введите вопрос", Toast.LENGTH_SHORT).show()
             return
         }
-        if (answer.isEmpty()) {
-            Toast.makeText(requireContext(), "Введите правильный ответ", Toast.LENGTH_SHORT).show()
+        if (options.size < 2) {
+            Toast.makeText(requireContext(), "Добавьте минимум 2 варианта", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (correctIndices.isEmpty()) {
+            Toast.makeText(requireContext(), "Отметьте хотя бы один правильный вариант", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -106,7 +159,8 @@ class CreateHomeworkFragment : Fragment() {
 
         val homework = CreatedHomework(
             question = question,
-            correctAnswer = answer,
+            options = options,
+            correctIndices = correctIndices,
             imageUri = imageUriString
         )
 
@@ -114,7 +168,10 @@ class CreateHomeworkFragment : Fragment() {
         Toast.makeText(requireContext(), "Задание сохранено!", Toast.LENGTH_SHORT).show()
 
         questionEdit.text?.clear()
-        answerEdit.text?.clear()
+        optionsContainer.removeAllViews()
+        optionViews.clear()
+        addOption()
+        addOption()
         previewImage.setImageResource(R.drawable.ic_image_placeholder)
         selectedImageUri = null
 
