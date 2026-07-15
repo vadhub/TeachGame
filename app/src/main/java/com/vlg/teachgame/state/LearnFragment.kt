@@ -58,6 +58,9 @@ class LearnFragment : Fragment() {
     private var currentAnswerCorrect: Boolean = false
     private var exWords = mutableListOf<String>()
 
+    private var lastUserEvaluation: Boolean = false
+    private var lastAnswerCorrect: Boolean = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         navigator = context as Navigator
@@ -151,7 +154,7 @@ class LearnFragment : Fragment() {
             resetAnswerState()
         }
 
-        cardViewAnimator.setOnAnswerProcessedListener { isAnswerAccepted, isTeacherMistake ->
+        cardViewAnimator.setOnAnswerProcessedListener { isAnswerAccepted, _ ->
 
 
             if (isAnswerAccepted) {
@@ -172,7 +175,7 @@ class LearnFragment : Fragment() {
                 visibleHandForNextStudent()
             }
 
-            gameManager.checkTeacher(isAnswerAccepted, isTeacherMistake)
+            gameManager.checkTeacher(lastAnswerCorrect, lastUserEvaluation)
         }
 
         cardViewAnimator.setOnAnimationCompleteListener {
@@ -229,6 +232,9 @@ class LearnFragment : Fragment() {
         val teacherMistake = !currentAnswerCorrect && userEvaluation
 
         cardViewAnimator.processAnswer(isAnswerAccepted, teacherMistake)
+
+        lastUserEvaluation = userEvaluation
+        lastAnswerCorrect = currentAnswerCorrect
     }
 
     private fun startLearningCycle() {
